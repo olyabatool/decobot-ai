@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DecoBot — AI Chatbot | DecodeLabs 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+  <!-- ── BACKGROUND GRID ───────────────────────── -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow--teal"></div>
+  <div class="bg-glow bg-glow--blue"></div>
+
+  <!-- ── LAYOUT ────────────────────────────────── -->
+  <div class="layout">
+
+    <!-- ── SIDEBAR ──────────────────────────────── -->
+    <aside class="sidebar">
+      <div class="sidebar__logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">DecoBot</span>
+      </div>
+
+      <div class="sidebar__badge">
+        <span class="badge-dot"></span>
+        <span>Online</span>
+      </div>
+
+      <nav class="sidebar__nav">
+        <button class="nav-btn nav-btn--active" id="btn-chat">
+          <span class="nav-icon">💬</span> Chat
+        </button>
+        <button class="nav-btn" id="btn-history">
+          <span class="nav-icon">📜</span> History
+        </button>
+        <button class="nav-btn" id="btn-stats">
+          <span class="nav-icon">📊</span> Stats
+        </button>
+      </nav>
+
+      <div class="sidebar__info">
+        <p class="info-label">PROJECT</p>
+        <p class="info-value">Rule-Based AI Chatbot</p>
+        <p class="info-label" style="margin-top:12px">BATCH</p>
+        <p class="info-value">DecodeLabs 2026</p>
+        <p class="info-label" style="margin-top:12px">ENGINE</p>
+        <p class="info-value">Fuzzy + Sentiment + Memory</p>
+      </div>
+
+      <button class="reset-btn" id="btn-reset">
+        ↺ &nbsp;Reset Session
+      </button>
+    </aside>
+
+    <!-- ── MAIN PANEL ────────────────────────────── -->
+    <main class="main">
+
+      <!-- ── HEADER ─────────────────────────────── -->
+      <header class="topbar">
+        <div class="topbar__left">
+          <span class="topbar__title">DecoBot</span>
+          <span class="topbar__sub">v2.0 · Rule-Based AI</span>
+        </div>
+        <div class="topbar__right">
+          <div class="meta-chip" id="chip-sentiment">
+            <span class="chip-label">MOOD</span>
+            <span class="chip-val" id="val-sentiment">—</span>
+          </div>
+          <div class="meta-chip">
+            <span class="chip-label">INTENT</span>
+            <span class="chip-val" id="val-intent">—</span>
+          </div>
+          <div class="meta-chip">
+            <span class="chip-label">CONF</span>
+            <span class="chip-val" id="val-conf">—</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- ── PANELS ─────────────────────────────── -->
+
+      <!-- Chat Panel -->
+      <section class="panel panel--active" id="panel-chat">
+        <div class="messages" id="messages">
+          <!-- Welcome message -->
+          <div class="msg msg--bot">
+            <div class="msg__avatar">⬡</div>
+            <div class="msg__body">
+              <div class="msg__bubble">
+                Hey! I'm <strong>DecoBot</strong> — a BS-level Rule-Based AI Chatbot
+                built at <strong>DecodeLabs</strong> 🤖<br><br>
+                I understand fuzzy input, detect your mood, and remember our
+                conversation.<br><br>
+                Type <code>help</code> to see everything I can do.
+              </div>
+              <div class="msg__meta">DecoBot · just now</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+          <div class="input-wrap">
+            <input
+              type="text"
+              id="user-input"
+              class="chat-input"
+              placeholder="Type a message..."
+              autocomplete="off"
+            />
+            <button class="send-btn" id="send-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+          <p class="input-hint">
+            Press <kbd>Enter</kbd> to send · Type <kbd>help</kbd> for commands
+          </p>
+        </div>
+      </section>
+
+      <!-- History Panel -->
+      <section class="panel" id="panel-history">
+        <div class="panel-header">
+          <h2>Conversation History</h2>
+          <p>Last 10 exchanges from this session</p>
+        </div>
+        <div class="history-list" id="history-list">
+          <p class="empty-state">No history yet. Start chatting! 💬</p>
+        </div>
+      </section>
+
+      <!-- Stats Panel -->
+      <section class="panel" id="panel-stats">
+        <div class="panel-header">
+          <h2>Session Statistics</h2>
+          <p>Real-time analytics for this session</p>
+        </div>
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">💬</div>
+            <div class="stat-val" id="stat-turns">—</div>
+            <div class="stat-label">Total Turns</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-val" id="stat-duration">—</div>
+            <div class="stat-label">Duration (sec)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-val" id="stat-intent">—</div>
+            <div class="stat-label">Last Intent</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👤</div>
+            <div class="stat-val" id="stat-user">—</div>
+            <div class="stat-label">User Name</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🕐</div>
+            <div class="stat-val" id="stat-start">—</div>
+            <div class="stat-label">Session Start</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html>
