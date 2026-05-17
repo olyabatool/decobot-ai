@@ -210,16 +210,3 @@ Project 2:  "hello" → [0.2, 0.9, 0.4] → nearest vector → response
 ```
 
 ---
-
-## 👩‍💻 Author
-
-**[Your Name]**
-DecodeLabs AI Internship · Batch 2026
-📧 [your-email]
-🔗 [your-linkedin]
-
----
-
-## 📄 License
-
-MIT License — feel free to use, modify, and share.
