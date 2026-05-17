@@ -1,27 +1,38 @@
-# 🤖 DecoBot — Rule-Based AI Chatbot
+<div align="center">
 
-> **DecodeLabs Industrial Training Kit · Batch 2026 · Project 1**
+<br>
 
-A professional, full-stack Rule-Based AI Chatbot built with Python + Flask.
-Goes beyond basic if-else logic to implement a production-grade architecture
-with fuzzy intent matching, sentiment detection, conversation memory, and a
-dark-themed web GUI.
+# 🤖 DecoBot AI
+
+### Rule-Based Chatbot — DecodeLabs Internship 2026
+
+<br>
+
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Flask](https://img.shields.io/badge/Flask-3.0-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
+[![FuzzyWuzzy](https://img.shields.io/badge/Fuzzy-Matching-FF6B6B?style=for-the-badge&logoColor=white)]()
+[![TextBlob](https://img.shields.io/badge/TextBlob-Sentiment-4ECDC4?style=for-the-badge)]()
+[![License](https://img.shields.io/badge/License-MIT-brightgreen?style=for-the-badge)]()
+[![Status](https://img.shields.io/badge/Status-Complete-success?style=for-the-badge)]()
+
+<br>
+
+> *"Before you build systems that learn on their own, master the art of teaching a machine through explicit logic."*
+> — DecodeLabs Curriculum
+
+<br>
+
+</div>
 
 ---
 
-## 🖥️ Preview
+## 📌 Overview
 
-```
-╔══════════════════════════════════════════╗
-║  ⬡ DecoBot  |  v2.0 · Rule-Based AI     ║
-║  MOOD: positive  INTENT: joke  CONF: 94% ║
-╠══════════════════════════════════════════╣
-║  You:  tell me something funny           ║
-║  Bot:  Why do programmers prefer dark    ║
-║        mode? Because light attracts      ║
-║        bugs! 😄                          ║
-╚══════════════════════════════════════════╝
-```
+**DecoBot** is a full-stack, professional-grade Rule-Based AI Chatbot — built as **Project 1** of the DecodeLabs AI Internship Track 2026.
+
+It goes far beyond basic if-else logic. This project implements a production-quality **IPO pipeline** (Input → Process → Output) with fuzzy intent matching, real-time sentiment analysis, conversation memory, and a live dark-themed web interface — all powered by deterministic rule-based logic, no neural networks needed.
+
+This is the same **guardrail architecture** used in real AI systems like NVIDIA NeMo and Llama Guard — the control layer that sits on top of large language models in production.
 
 ---
 
@@ -29,54 +40,113 @@ dark-themed web GUI.
 
 | Feature | Description |
 |---|---|
-| 🧠 **Fuzzy Matching** | Understands typos and variations using `fuzzywuzzy` |
-| 💬 **Conversation Memory** | Remembers last 10 exchanges per session |
-| 😊 **Sentiment Detection** | Detects user mood via `TextBlob` |
-| 🔄 **Multi-turn Dialogue** | Context-aware, personalized responses |
-| 🌐 **Web GUI** | Dark-themed professional interface (Flask + HTML/CSS/JS) |
-| 📊 **Live Stats** | Real-time session analytics |
-| 📜 **History Panel** | Full conversation log with intent tags |
-| 🔁 **Session Reset** | Clean restart without server reload |
+| 🎯 **Fuzzy Intent Matching** | Handles typos and variations — `"helo"` correctly maps to `"hello"` |
+| 😊 **Sentiment Detection** | Detects user mood in real time using TextBlob polarity analysis |
+| 🧠 **Conversation Memory** | Stores last 10 exchanges per session using a circular `deque` buffer |
+| 🔄 **Multi-turn Dialogue** | Context-aware responses — detects repeated intents and personalizes replies |
+| 👤 **Name Personalization** | Learns your name mid-conversation and uses it throughout |
+| 🌐 **Dark Web GUI** | Retro-futuristic chat interface with 3 panels: Chat, History, Stats |
+| 📊 **Live Session Analytics** | Real-time stats — turn count, session duration, last detected intent |
+| 📜 **History Panel** | Full conversation log with intent and sentiment tags per message |
+| 🔁 **Session Reset** | One-click fresh start without restarting the server |
 
 ---
 
-## 🏗️ Architecture
+## 🖥️ Interface Preview
+
+```
+╔══════════════════════════════════════════════════════════╗
+║  ⬡ DecoBot  │  v2.0 · Rule-Based AI                     ║
+║─────────────────────────────────────────────────────────║
+║  MOOD: positive 🟢   INTENT: joke   CONF: 94%           ║
+╠══════════════════════════════════════════════════════════╣
+║                                                          ║
+║   ⬡  Hey Sara! 👋 Great to see you again.               ║
+║                                                          ║
+║                   tell me something funny  [You] →      ║
+║                                                          ║
+║   ⬡  Why do programmers prefer dark mode?               ║
+║       Because light attracts bugs! 😄                   ║
+║                                                          ║
+╠══════════════════════════════════════════════════════════╣
+║  [ Type a message...                        ] [ Send → ] ║
+╚══════════════════════════════════════════════════════════╝
+```
+
+---
+
+## 🏗️ Architecture — IPO Model
+
+The entire chatbot follows the **Input → Process → Output** model taught in the DecodeLabs curriculum:
 
 ```
 USER INPUT
     │
     ▼
-┌─────────────┐
-│ SANITIZATION│  lowercase · strip · remove punctuation
-└──────┬──────┘
-       │
-    ▼
-┌─────────────────┐
-│ SENTIMENT       │  TextBlob polarity → positive / negative / neutral
-└──────┬──────────┘
-       │
-    ▼
-┌─────────────────┐
-│ NAME DETECTION  │  "my name is X" → stored in memory
-└──────┬──────────┘
-       │
-    ▼
-┌─────────────────┐
-│ SPECIAL CMDS    │  history · stats · name recall
-└──────┬──────────┘
-       │
-    ▼
-┌─────────────────┐
-│ FUZZY MATCHING  │  fuzz.token_sort_ratio against all patterns O(1) dict
-└──────┬──────────┘
-       │
-    ▼
-┌─────────────────┐
-│ RESPONSE BUILD  │  random selection · multi-turn context · personalization
-└──────┬──────────┘
-       │
-    ▼
-  OUTPUT + memory.add()
+┌──────────────────────────────────┐
+│  SANITIZATION                    │
+│  .lower() · .strip() · regex     │
+│  "HELLO!!" ──► "hello"           │
+└──────────────┬───────────────────┘
+               │
+               ▼
+┌──────────────────────────────────┐
+│  SENTIMENT DETECTION             │
+│  TextBlob polarity score         │
+│  > 0.2  → positive 😊           │
+│  < -0.2 → negative 😔           │
+│  else   → neutral  😐           │
+└──────────────┬───────────────────┘
+               │
+               ▼
+┌──────────────────────────────────┐
+│  NAME EXTRACTION                 │
+│  "my name is Sara" → saved ✅    │
+└──────────────┬───────────────────┘
+               │
+               ▼
+┌──────────────────────────────────┐
+│  SPECIAL COMMANDS                │
+│  history · stats · name recall   │
+└──────────────┬───────────────────┘
+               │
+               ▼
+┌──────────────────────────────────┐
+│  FUZZY INTENT MATCHING           │
+│  fuzz.token_sort_ratio()         │
+│  threshold: 62 · O(1) lookup     │
+└──────────────┬───────────────────┘
+               │
+               ▼
+┌──────────────────────────────────┐
+│  RESPONSE BUILDING               │
+│  Random pick · Multi-turn ctx    │
+│  Personalization · Mood addon    │
+└──────────────┬───────────────────┘
+               │
+               ▼
+         OUTPUT + MEMORY UPDATE
+```
+
+### Dictionary vs If-Elif — Why it matters
+
+```python
+# ❌ Anti-Pattern — O(n) Linear Complexity
+# Checks every single condition — gets slower with more rules
+if   user_input == "hello": ...
+elif user_input == "bye":   ...
+elif user_input == "help":  ...
+elif user_input == "joke":  ...   # still checking...
+
+
+# ✅ Professional Approach — O(1) Constant Time
+# Instant lookup regardless of how many intents exist
+responses = {
+    "hello": "Hi there!",
+    "bye":   "Goodbye!",
+    "help":  "Here's what I can do...",
+}
+reply = responses.get(user_input, "I don't understand.")
 ```
 
 ---
@@ -86,52 +156,62 @@ USER INPUT
 ```
 decobot-ai/
 │
-├── app.py                  Flask backend (routes & session management)
-├── chatbot.py              Core AI engine (IPO pipeline)
-├── requirements.txt        Python dependencies
-├── README.md               This file
+├── app.py                   Flask server — 5 REST API routes
+├── chatbot.py               Core AI engine — full IPO pipeline
+├── requirements.txt         Python dependencies
+├── README.md                Project documentation
 │
 ├── templates/
-│   └── index.html          Chat UI (Jinja2 template)
+│   └── index.html           Dark-theme chat UI (3 panels)
 │
 ├── static/
 │   ├── css/
-│   │   └── style.css       Dark retro-futuristic theme
+│   │   └── style.css        Retro-futuristic dark styling
 │   └── js/
-│       └── chat.js         Frontend logic (fetch API + DOM)
+│       └── chat.js          Frontend logic — Fetch API
 │
 └── docs/
-    └── architecture.md     Detailed technical documentation
+    └── architecture.md      Deep-dive technical documentation
 ```
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
-### 1. Clone the repository
+### Prerequisites
+- Python 3.11+
+- pip
+
+### Installation
+
+**1. Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/decobot-ai.git
+git clone https://github.com/olyabatool/decobot-ai.git
 cd decobot-ai
 ```
 
-### 2. Create a virtual environment
+**2. Create a virtual environment**
 ```bash
 python -m venv venv
-source venv/bin/activate        # Mac/Linux
-venv\Scripts\activate           # Windows
+
+# Windows
+venv\Scripts\activate
+
+# Mac / Linux
+source venv/bin/activate
 ```
 
-### 3. Install dependencies
+**3. Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Run the server
+**4. Run the server**
 ```bash
 python app.py
 ```
 
-### 5. Open in browser
+**5. Open in browser**
 ```
 http://127.0.0.1:5000
 ```
@@ -140,73 +220,107 @@ http://127.0.0.1:5000
 
 ## 💬 Supported Intents
 
-| Intent | Example Inputs |
+| Intent | Example Phrases |
 |---|---|
-| `greeting` | hello, hi, hey, good morning |
-| `farewell` | bye, goodbye, see you |
-| `identity` | who are you, your name |
-| `feelings` | how are you, you good? |
-| `help` | help, what can you do |
-| `joke` | joke, make me laugh, funny |
-| `about_ai` | what is AI, explain ML |
-| `thanks` | thanks, appreciate it |
-| `time` | what time is it |
-| `compliment` | good bot, you're amazing |
-| `insult` | bad bot, you're dumb |
+| `greeting` | hello, hi, hey, good morning, helo *(typo ok!)* |
+| `farewell` | bye, goodbye, see you, take care |
+| `identity` | who are you, your name, introduce yourself |
+| `feelings` | how are you, you good, how's it going |
+| `help` | help, what can you do, commands |
+| `joke` | joke, tell me a joke, make me laugh, funny |
+| `about_ai` | what is AI, explain machine learning, deep learning |
+| `thanks` | thanks, thank you, ty, appreciate it |
+| `time` | what time is it, current time |
+| `compliment` | good bot, you're amazing, impressive |
+| `insult` | bad bot, you're dumb *(handled gracefully!)* |
 
----
-
-## 🧪 Key Concepts Demonstrated
-
-### Why Dictionary over If-Elif?
-
-```python
-# ❌ Anti-pattern: O(n) — slows down with more rules
-if   user_input == "hello": ...
-elif user_input == "bye":   ...
-elif user_input == "help":  ...   # checks every condition
-
-# ✅ Professional: O(1) — instant lookup regardless of size
-responses = {"hello": "Hi!", "bye": "Goodbye!"}
-reply = responses.get(user_input, "I don't understand")
-```
-
-### Fuzzy Matching
-```python
-# Handles typos and variations
-fuzz.token_sort_ratio("helo", "hello")   # → 89
-fuzz.token_sort_ratio("make me laugh", "joke")  # → 63+
-```
-
-### Sentiment Detection
-```python
-TextBlob("I love this!").sentiment.polarity   # → 0.625 (positive)
-TextBlob("this is terrible").sentiment.polarity  # → -1.0 (negative)
-```
+> All intents support **fuzzy matching** — partial phrases, typos, and variations all work.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Backend | Python 3.11+, Flask 3.0 |
-| AI Engine | fuzzywuzzy, TextBlob, python-Levenshtein |
-| Frontend | HTML5, CSS3 (custom dark theme), Vanilla JS |
-| Fonts | Syne (display), Space Mono (body) |
+| Layer | Technology | Role |
+|---|---|---|
+| Backend | Python 3.11 + Flask 3.0 | Server + REST API |
+| Fuzzy Matching | fuzzywuzzy + python-Levenshtein | Typo-tolerant intent detection |
+| NLP | TextBlob | Sentiment polarity analysis |
+| Memory | Python `collections.deque` | Circular conversation buffer |
+| Frontend | HTML5 + CSS3 + Vanilla JS | Dark theme GUI |
+| Typography | Syne + Space Mono (Google Fonts) | Retro-futuristic design |
 
 ---
 
-## 📈 What's Next (Project 2 Preview)
+## 🔌 API Endpoints
 
-Project 1 uses **discrete key-value mapping** (exact + fuzzy).
-Project 2 will upgrade to **semantic vector embeddings** — where meaning
-is represented as coordinates in high-dimensional space, enabling true
-contextual understanding.
+| Method | Route | Description |
+|---|---|---|
+| `GET` | `/` | Serves the chat UI |
+| `POST` | `/chat` | Processes message, returns JSON response |
+| `GET` | `/history` | Returns full conversation history |
+| `GET` | `/stats` | Returns session statistics |
+| `POST` | `/reset` | Clears conversation memory |
 
-```
-Project 1:  "hello" ──────────► "Hi there!"  (key lookup)
-Project 2:  "hello" → [0.2, 0.9, 0.4] → nearest vector → response
+**Example `/chat` response:**
+```json
+{
+  "response":   "Hey Sara! 👋 Great to see you.",
+  "intent":     "greeting",
+  "sentiment":  "positive",
+  "confidence": 97,
+  "turn":       3,
+  "timestamp":  "02:45 PM"
+}
 ```
 
 ---
+
+## 📈 Project Roadmap
+
+```
+✅  Project 1  —  Rule-Based Chatbot      (Fuzzy + Sentiment + Memory)
+🔜  Project 2  —  Semantic Chatbot        (Word Embeddings + Vector Search)
+🔜  Project 3  —  ML Intent Classifier    (scikit-learn + TF-IDF)
+🔜  Project 4  —  Neural Chatbot          (Transformer Architecture)
+```
+
+---
+
+## 🧠 Key Learnings
+
+Working on this project demonstrated:
+
+- The **IPO model** as a foundation for all AI system design
+- Why **deterministic guardrails** are essential in production AI
+- The performance advantage of **hash maps over linear search** (O(1) vs O(n))
+- How **fuzzy string matching** bridges the gap between rule-based and ML systems
+- **Session management** in web applications using Flask + UUID
+- Full-stack development — Python backend + HTML/CSS/JS frontend
+
+---
+
+## 👩‍💻 Author
+
+**Olya Batool**
+AI Engineer Intern · DecodeLabs Batch 2026
+
+[![GitHub](https://img.shields.io/badge/GitHub-olyabatool-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/olyabatool)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/your-linkedin)
+
+---
+
+## 📄 License
+
+```
+MIT License
+Copyright (c) 2026 Olya Batool
+Free to use, modify, and share with attribution.
+```
+
+---
+
+<div align="center">
+
+Built with 💙 during the DecodeLabs AI Internship · Project 1 of 4
+
+</div>
